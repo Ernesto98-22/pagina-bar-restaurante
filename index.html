@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Restaurante Sabores - Auténtica fusión cubana e italiana en Pinar del Río. Reservas online, menú completo y la mejor experiencia gastronómica.">
+    <meta name="keywords" content="restaurante, cubano, italiano, Pinar del Río, comida, reservas, menú">
+    <meta name="author" content="Restaurante Sabores">
+    <meta name="theme-color" content="#1a2632">
+    <title>Restaurante Sabores | Fusión Cubana e Italiana en Pinar del Río</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/poppins@5.0.0/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Aviso Offline -->
+    <div id="offlineNotice" class="offline-notice" role="alert" aria-live="polite">
+        <i class="fas fa-wifi"></i> Sin conexión. Algunas funciones pueden no estar disponibles.
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar" role="navigation" aria-label="Navegación principal">
+        <div class="nav-container">
+            <a href="#inicio" class="logo" aria-label="Ir al inicio">
+                <i class="fas fa-utensils" aria-hidden="true"></i> Sabores
+            </a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#reservas">Reservar Mesa</a></li>
+                <li><a href="#menu">Menú</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li id="auth-nav-link">
+                    <a href="#" id="loginBtnNav" class="btn-login">Acceder</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal de Autenticación -->
+    <div id="authModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Cerrar modal">&times;</span>
+            <h2 id="modalTitle" class="modal-title">Acceso a tu cuenta</h2>
+            
+            <div id="auth-tabs" role="tablist">
+                <button class="tab-btn active" data-tab="login" role="tab" aria-selected="true" aria-controls="loginForm">Iniciar Sesión</button>
+                <button class="tab-btn" data-tab="register" role="tab" aria-selected="false" aria-controls="registerForm">Crear Cuenta</button>
+            </div>
+
+            <!-- Formulario Login -->
+            <form id="loginForm" class="auth-form active" role="tabpanel" aria-labelledby="loginTab">
+                <div class="form-group">
+                    <label for="loginUsername">
+                        <i class="fas fa-user" aria-hidden="true"></i> Nombre de usuario *
+                    </label>
+                    <input type="text" id="loginUsername" name="username" required autocomplete="username" placeholder="Tu nombre de usuario">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">
+                        <i class="fas fa-lock" aria-hidden="true"></i> Contraseña *
+                    </label>
+                    <input type="password" id="loginPassword" name="password" required autocomplete="current-password" placeholder="Tu contraseña">
+                </div>
+                <div id="loginMessage" class="form-status" role="alert" aria-live="polite"></div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
+                </button>
+                <p class="auth-help">¿Olvidaste tu contraseña? Contacta al administrador.</p>
+            </form>
+
+            <!-- Formulario Registro -->
+            <form id="registerForm" class="auth-form" role="tabpanel" aria-labelledby="registerTab">
+                <div class="form-group">
+                    <label for="registerUsername">
+                        <i class="fas fa-user" aria-hidden="true"></i> Nombre de usuario *
+                    </label>
+                    <input type="text" id="registerUsername" name="username" required autocomplete="username" placeholder="Elige un nombre de usuario">
+                    <small class="form-help">Este nombre será visible públicamente en tus reseñas</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">
+                        <i class="fas fa-envelope" aria-hidden="true"></i> Correo electrónico <span class="optional">(opcional)</span>
+                    </label>
+                    <input type="email" id="registerEmail" name="email" autocomplete="email" placeholder="tu@email.com">
+                    <small class="form-help">Útil para recuperación de cuenta</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">
+                        <i class="fas fa-phone" aria-hidden="true"></i> Teléfono celular *
+                    </label>
+                    <input type="tel" id="registerPhone" name="phone" required autocomplete="tel" placeholder="+53 5XXX XXXX" pattern="^\+53\s?[0-9]{8}$">
+                    <small class="form-help">Formato cubano: +53 seguido de 8 dígitos</small>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">
+                        <i class="fas fa-lock" aria-hidden="true"></i> Contraseña *
+                    </label>
+                    <input type="password" id="registerPassword" name="password" required autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6">
+                    <small class="form-help">Usa letras, números y símbolos para mayor seguridad</small>
+                </div>
+                <div id="registerMessage" class="form-status" role="alert" aria-live="polite"></div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> Crear Cuenta
+                </button>
+                <p class="auth-help">Al registrarte aceptas nuestros <a href="#terminos">términos y condiciones</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="inicio" class="hero" role="banner">
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="hero-content">
+            <span class="hero-badge">
+                <i class="fas fa-star" aria-hidden="true"></i> Experiencia Gastronómica Única
+            </span>
+            <h1>Fusión Cubana e Italiana en el Corazón de Pinar del Río</h1>
+            <p class="hero-subtitle">Sabores auténticos que cuentan historias</p>
+            <p class="hero-description">
+                Desde 2008, combinamos las recetas tradicionales de Cuba con la pasión culinaria italiana. 
+                Ingredientes frescos seleccionados diariamente, ambiente acogedor y un servicio que te hará sentir como en casa.
+            </p>
+            <div class="hero-buttons">
+                <a href="#reservas" class="btn btn-primary">
+                    <i class="fas fa-calendar-check" aria-hidden="true"></i> Reservar Mesa
+                </a>
+                <a href="tel:+5348727966" class="btn btn-secondary">
+                    <i class="fas fa-phone" aria-hidden="true"></i> Llamar Ahora
+                </a>
+                <a href="#menu" class="btn btn-accent">
+                    <i class="fas fa-book-open" aria-hidden="true"></i> Ver Menú
+                </a>
+            </div>
+            <div class="hero-stats" aria-label="Estadísticas del restaurante">
+                <div>
+                    <i class="fas fa-award" aria-hidden="true"></i>
+                    <span>+15 años de experiencia</span>
+                </div>
+                <div>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <span>4.9 valoración media</span>
+                </div>
+                <div>
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <span>12:00 - 23:00 todos los días</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección de Reservas -->
+    <section id="reservas" class="section" aria-labelledby="reservasTitle">
+        <h2 id="reservasTitle" class="section-title">Reserva tu Mesa</h2>
+        <div class="currency-notice" role="note">
+            <i class="fas fa-info-circle" aria-hidden="true"></i> 
+            Precios en pesos cubanos (CUP) aproximados. Consulta el menú actualizado al momento de ordenar.
+        </div>
+        
+        <form id="reservationForm" class="reservation-form" aria-label="Formulario de reservas">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nombre">
+                        <i class="fas fa-user" aria-hidden="true"></i> Nombre completo *
+                    </label>
+                    <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="Tu nombre completo">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">
+                        <i class="fas fa-phone" aria-hidden="true"></i> Teléfono *
+                    </label>
+                    <input type="tel" id="telefono" name="telefono" required autocomplete="tel" placeholder="+53 5XXX XXXX" pattern="^\+53\s?[0-9]{8}$">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fecha">
+                        <i class="fas fa-calendar" aria-hidden="true"></i> Fecha *
+                    </label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="hora">
+                        <i class="fas fa-clock" aria-hidden="true"></i> Hora *
+                    </label>
+                    <select id="hora" name="hora" required>
+                        <option value="">Seleccionar hora</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="12:30">12:30 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="13:30">1:30 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="14:30">2:30 PM</option>
+                        <option value="19:00">7:00 PM</option>
+                        <option value="19:30">7:30 PM</option>
+                        <option value="20:00">8:00 PM</option>
+                        <option value="20:30">8:30 PM</option>
+                        <option value="21:00">9:00 PM</option>
+                        <option value="21:30">9:30 PM</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="personas">
+                        <i class="fas fa-users" aria-hidden="true"></i> Número de personas *
+                    </label>
+                    <select id="personas" name="personas" required>
+                        <option value="">Seleccionar</option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8+">8+ personas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ocasion">
+                        <i class="fas fa-gift" aria-hidden="true"></i> Ocasión especial
+                    </label>
+                    <select id="ocasion" name="ocasion">
+                        <option value="ninguna">Ninguna</option>
+                        <option value="cumpleanos">Cumpleaños</option>
+                        <option value="aniversario">Aniversario</option>
+                        <option value="negocios">Reunión de negocios</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="notas">
+                    <i class="fas fa-comment" aria-hidden="true"></i> Notas adicionales
+                </label>
+                <textarea id="notas" name="notas" rows="3" placeholder="¿Alguna preferencia especial? (alergias, mesa específica, etc.)"></textarea>
+            </div>
+            
+            <div id="formStatus" class="form-status" role="alert" aria-live="polite"></div>
+            
+            <button type="submit" id="submitBtn" class="submit-btn">
+                <i class="fas fa-check-circle" aria-hidden="true"></i> Confirmar Reserva
+            </button>
+            
+            <p class="form-trust">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i> 
+                Tu reserva está protegida. Recibirás confirmación inmediata por WhatsApp.
+            </p>
+        </form>
+    </section>
+
+    <!-- Sección de Menú -->
+    <section id="menu" class="section" aria-labelledby="menuTitle">
+        <h2 id="menuTitle" class="section-title">Nuestro Menú</h2>
+        <div class="currency-notice" role="note">
+            <i class="fas fa-info-circle" aria-hidden="true"></i> 
+            Precios en CUP. Sujeto a disponibilidad del día.
+        </div>
+        
+        <div class="menu-categories" role="tablist" aria-label="Categorías del menú">
+            <button class="menu-category-btn active" data-category="todos" role="tab" aria-selected="true">Todos</button>
+            <button class="menu-category-btn" data-category="cubanos" role="tab" aria-selected="false">Platos Cubanos</button>
+            <button class="menu-category-btn" data-category="italianos" role="tab" aria-selected="false">Platos Italianos</button>
+            <button class="menu-category-btn" data-category="bebidas" role="tab" aria-selected="false">Bebidas</button>
+            <button class="menu-category-btn" data-category="postres" role="tab" aria-selected="false">Postres</button>
+        </div>
+        
+        <div id="menuGrid" class="menu-grid" role="tabpanel" aria-label="Lista de platos del menú">
+            <!-- Los items del menú se cargan dinámicamente -->
+        </div>
+    </section>
+
+    <!-- Sección de Reseñas -->
+    <section id="resenas" class="section section-alt" aria-labelledby="resenasTitle">
+        <h2 id="resenasTitle" class="section-title">Opiniones de Nuestros Clientes</h2>
+        
+        <div id="reviewsContainer" class="testimonials-grid" role="list" aria-label="Reseñas de clientes">
+            <!-- Las reseñas se cargan dinámicamente -->
+        </div>
+        
+        <div class="review-form-container" id="reviewFormContainer">
+            <h3 class="review-form-title">Comparte tu experiencia</h3>
+            <form id="reviewForm" class="review-form" aria-label="Formulario de reseñas">
+                <div class="form-group">
+                    <label>Calificación *</label>
+                    <div class="rating-stars" role="radiogroup" aria-label="Calificación de estrellas">
+                        <i class="far fa-star" data-rating="1" role="radio" aria-label="1 estrella" tabindex="0"></i>
+                        <i class="far fa-star" data-rating="2" role="radio" aria-label="2 estrellas" tabindex="0"></i>
+                        <i class="far fa-star" data-rating="3" role="radio" aria-label="3 estrellas" tabindex="0"></i>
+                        <i class="far fa-star" data-rating="4" role="radio" aria-label="4 estrellas" tabindex="0"></i>
+                        <i class="far fa-star" data-rating="5" role="radio" aria-label="5 estrellas" tabindex="0"></i>
+                    </div>
+                    <input type="hidden" id="reviewRating" name="rating" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="reviewComment">
+                        <i class="fas fa-comment" aria-hidden="true"></i> Comentario *
+                    </label>
+                    <textarea id="reviewComment" name="comment" rows="4" required placeholder="Cuéntanos sobre tu experiencia..."></textarea>
+                </div>
+                <div id="reviewMessage" class="form-status" role="alert" aria-live="polite"></div>
+                <button type="submit" class="submit-btn btn-review">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i> Enviar Opinión
+                </button>
+                <p class="review-notice">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> 
+                    Tu reseña será revisada antes de publicarse para garantizar la calidad.
+                </p>
+            </form>
+        </div>
+        
+        <div id="loginPrompt" class="login-prompt">
+            <p>¿Quieres dejar tu opinión? <a href="#" id="showLoginModal">Inicia sesión</a> o <a href="#" id="showRegisterModal">regístrate</a>.</p>
+        </div>
+    </section>
+
+    <!-- Sección Sobre Nosotros -->
+    <section id="nosotros" class="section" aria-labelledby="nosotrosTitle">
+        <h2 id="nosotrosTitle" class="section-title">Sobre Nosotros</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p class="about-lead">
+                    Desde 2008 en el centro de Pinar del Río, unimos la tradición culinaria cubana con la pasión italiana. 
+                    Seleccionamos ingredientes frescos cada mañana y preparamos cada plato con dedicación y amor.
+                </p>
+                <p>
+                    Ya sea para una cena romántica, una reunión familiar o un encuentro de negocios, 
+                    te ofrecemos un espacio donde los sabores auténticos y la calidez humana se encuentran. 
+                    Nuestro equipo está comprometido con brindarte una experiencia memorable en cada visita.
+                </p>
+            </div>
+            <div class="about-features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils" aria-hidden="true"></i>
+                    </div>
+                    <h3>Cocina Italiana</h3>
+                    <p>Recetas tradicionales con ingredientes de calidad importada</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-pepper-hot" aria-hidden="true"></i>
+                    </div>
+                    <h3>Sabor Cubano</h3>
+                    <p>Platos típicos de la región con el sazón de siempre</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-cocktail" aria-hidden="true"></i>
+                    </div>
+                    <h3>Bar Completo</h3>
+                    <p>Cócteles premium y selección de vinos nacionales e internacionales</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    </div>
+                    <h3>Ubicación Céntrica</h3>
+                    <p>Calle Martí, fácil acceso y estacionamiento disponible</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Galería -->
+    <section id="galeria" class="section section-alt" aria-labelledby="galeriaTitle">
+        <h2 id="galeriaTitle" class="section-title">Galería</h2>
+        <div class="gallery-grid" role="list" aria-label="Galería de imágenes">
+            <figure class="gallery-item" role="listitem">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=400&fit=crop" alt="Plato principal de carne con arroz y plátano" loading="lazy">
+                <figcaption>Plato de la casa</figcaption>
+            </figure>
+            <figure class="gallery-item" role="listitem">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=400&fit=crop" alt="Pizza italiana tradicional" loading="lazy">
+                <figcaption>Pizza Artesanal</figcaption>
+            </figure>
+            <figure class="gallery-item" role="listitem">
+                <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&h=400&fit=crop" alt="Cócteles del bar" loading="lazy">
+                <figcaption>Cócteles Premium</figcaption>
+            </figure>
+            <figure class="gallery-item" role="listitem">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop" alt="Interior del restaurante" loading="lazy">
+                <figcaption>Nuestro Ambiente</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="section" aria-labelledby="contactoTitle">
+        <h2 id="contactoTitle" class="section-title">Contacto y Ubicación</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3>Dirección</h3>
+                        <p>Calle Martí, Pinar del Río 20100, Cuba</p>
+                        <p class="text-muted">Entre A y B, frente al Hospital Provincial</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3>Teléfono</h3>
+                        <a href="tel:+5348727966">+53 48 727966</a>
+                        <p class="text-muted">Lunes a Domingo, 12pm - 11pm</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3>Horario</h3>
+                        <p>Lunes a Domingo: 12:00 PM - 11:00 PM</p>
+                        <p class="text-muted">Cocina cierra a las 10:30 PM</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3>WhatsApp</h3>
+                        <a href="https://wa.me/5348727966">+53 48 727966</a>
+                        <p class="text-muted">Respuesta rápida</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fab fa-telegram" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3>Telegram</h3>
+                        <a href="https://t.me/restaurantesabores">@restaurantesabores</a>
+                        <p class="text-muted">Canal oficial de novedades</p>
+                    </div>
+                </div>
+                <a href="https://wa.me/5348727966?text=Hola,%20quisiera%20hacer%20una%20reserva" class="btn btn-primary btn-full">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> Reservar por WhatsApp
+                </a>
+            </div>
+            <div class="map-container">
+                <div class="map-fallback">
+                    <h3><i class="fas fa-map" aria-hidden="true"></i> Cómo llegar</h3>
+                    <ul class="directions-list">
+                        <li><i class="fas fa-walking" aria-hidden="true"></i> Desde el Parque de la Independencia: Caminar 2 cuadras al este por Martí</li>
+                        <li><i class="fas fa-bus" aria-hidden="true"></i> Transporte público: Parada "Hospital Provincial" a 100m</li>
+                        <li><i class="fas fa-car" aria-hidden="true"></i> En auto: Estacionamiento disponible en calle lateral</li>
+                        <li><i class="fas fa-building" aria-hidden="true"></i> Referencia: Frente al Hospital Provincial</li>
+                    </ul>
+                    <a href="https://maps.google.com/?q=22.4167,-83.6833" class="btn btn-accent" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i> Ver en Google Maps
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3><i class="fas fa-utensils" aria-hidden="true"></i> Sabores</h3>
+                <p>La mejor experiencia gastronómica en Pinar del Río</p>
+            </div>
+            <nav class="footer-links" aria-label="Enlaces del pie de página">
+                <a href="#inicio">Inicio</a>
+                <a href="#reservas">Reservas</a>
+                <a href="#menu">Menú</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#galeria">Galería</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <div class="social-links">
+                <a href="https://wa.me/5348727966" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                </a>
+                <a href="https://t.me/restaurantesabores" class="social-link" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-telegram" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="footer-legal">
+                <a href="#privacidad">Política de Privacidad</a>
+                <a href="#terminos">Términos y Condiciones</a>
+                <a href="admin.html" class="admin-link" aria-label="Panel de administración">
+                    <i class="fas fa-user-gear" aria-hidden="true"></i> Administración
+                </a>
+            </div>
+            <p class="footer-copyright">
+                © 2025 Restaurante Sabores. Todos los derechos reservados.<br>
+                Calle Martí, Pinar del Río, Cuba
+            </p>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/5348727966" class="whatsapp-float" aria-label="Contactar por WhatsApp" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ========================================
+        // CONFIGURACIÓN DE SUPABASE
+        // ¡REEMPLAZA CON TUS DATOS REALES!
+        // ========================================
+        const SUPABASE_URL = 'https://ijoxilvydggohxsatgba.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_wKVtTuAtJHafext0wtouIw_lEUM7YxL';
+        
+        // Inicializar cliente de Supabase
+        let supabaseClient = null;
+        
+        try {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            window.supabase = supabaseClient;
+            console.log('✅ Supabase inicializado correctamente');
+        } catch (error) {
+            console.error('❌ Error inicializando Supabase:', error);
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
