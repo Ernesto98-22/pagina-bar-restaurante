@@ -585,7 +585,7 @@ if (reviewForm) {
             
             // ---------- NUEVO: ENVIAR NOTIFICACIÓN POR WHATSAPP ----------
             const mensajeWhatsApp = `*Nueva reseña en Restaurante Sabores*%0A%0A👤 Usuario: ${currentUsername || currentUser.email}%0A⭐ Calificación: ${rating} estrellas%0A💬 Comentario: ${comment}%0A%0ARevisar en panel admin.`;
-            const urlWhatsApp = `https://wa.me/5348727966?text=${mensajeWhatsApp}`;
+            const urlWhatsApp = `https://wa.me/5356126176?text=${mensajeWhatsApp}`;
             window.open(urlWhatsApp, '_blank');
             // ------------------------------------------------------------
             
@@ -659,7 +659,7 @@ if (reservationForm) {
         if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...'; }
         showStatus('Procesando tu reserva...', 'loading');
         const mensajeWhatsApp = `Hola, soy ${formData.nombre}. Quiero reservar para ${formData.personas} personas el ${formData.fecha} a las ${formData.hora}. Tel: ${formData.telefono}. Gracias.`;
-        const urlWhatsApp = `https://wa.me/5348727966?text=${encodeURIComponent(mensajeWhatsApp)}`;
+        const urlWhatsApp = `https://wa.me/5356126176?text=${encodeURIComponent(mensajeWhatsApp)}`;
         if (isSupabaseAvailable()) {
             try {
                 const { error } = await window.supabase.from('reservas').insert([formData]);
