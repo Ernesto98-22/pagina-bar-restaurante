@@ -1361,9 +1361,18 @@ RESPONSIVE
 }
 
 @media (max-width: 768px) {
-    .menu-toggle {
+    /* ... código existente ... */
+    .footer-legal {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.5rem;
     }
+    .admin-link {
+        align-self: center;
+    }
+}
     
     .nav-links {
         position: fixed;
